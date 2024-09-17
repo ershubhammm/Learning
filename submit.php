@@ -1,10 +1,12 @@
 <?php
 if ($_SEVRER['REQUEST-METHOD'] == 'POST') {
-    $email = $POST['emailId'];
-    $mNumber = $POST['mobileNumber'];
-    $name = $POST['name'];
-    $fName = $POST['fatherName'];
-    $dob = $POST['dateOfBirth'];
-    $cast = $POST['category'];
+    $email = $_POST['emailId'];
+    $mNumber = $_POST['mobileNumber'];
+    $name = $_POST['name'];
+    $fName = $_POST['fatherName'];
+    $dob = $_POST['dateOfBirth'];
+    $cast = $_POST['category'];
+    $cast = $_POST['language'];
+    $cast = $_POST['genderValue'];
 }
 ?>
