@@ -34,7 +34,7 @@ include("sidebar.php");
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form name="theForm" method="post" action="submit.php">
+                        <form name="theForm" method="post">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="emailId">Email Address</label>
@@ -78,7 +78,8 @@ include("sidebar.php");
 
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select class="custom-select" id="selectOptions" onChange="validationForm()">
+                                    <select class="custom-select" id="selectOptions" onChange="validationForm()"
+                                        name="category">
                                         <option value="">Select Option</option>
                                         <option value="General">General</option>
                                         <option value="OBC">OBC</option>
@@ -91,28 +92,28 @@ include("sidebar.php");
                                 <div>
                                     <label for="">Language You Know</label>
                                     <div class="form-check">
-                                        <input class="valid_check" class="form-check-input" type="checkbox"
-                                            value="English" id="english" onClick="validationForm()" name="english">
+                                        <input class="form-check-input valid_check" type="checkbox" value="English"
+                                            id="english" onClick="validationForm()" name="english">
                                         <label class="form-check-label" for="english">
                                             English
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="valid_check" class="form-check-input" type="checkbox"
-                                            value="Hindi" id="hindi" onClick="validationForm()" name="hindi">
+                                        <input class="form-check-input valid_check" type="checkbox" value="Hindi"
+                                            id="hindi" onClick="validationForm()" name="hindi">
                                         <label class="form-check-label" for="hindi">
                                             Hindi
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="valid_check" class="form-check-input" type="checkbox"
-                                            value="Marathi" id="marathi" onClick="validationForm()" name="marathi">
+                                        <input class="form-check-input valid_check" type="checkbox" value="Marathi"
+                                            id="marathi" onClick="validationForm()" name="marathi">
                                         <label class="form-check-label" for="marathi">
                                             Marathi
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="valid_check" class="form-check-input" type="checkbox" value="Urdu"
+                                        <input class="form-check-input valid_check" type="checkbox" value="Urdu"
                                             id="urdu" onClick="validationForm()" name="urdu">
                                         <label class="form-check-label" for="urdu">
                                             Urdu
@@ -123,13 +124,13 @@ include("sidebar.php");
                                 <div>
                                     <label for="">Gender</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gender" id="male"
+                                        <input class="form-check-input find_gender" type="radio" name="gender" id="male"
                                             value="Male" onclick="validationForm()" name="male">
                                         <label class="form-check-label" for="male">
                                             Male
                                         </label><br>
-                                        <input class="form-check-input" type="radio" name="gender" id="female"
-                                            value="Female" onclick="validationForm()" name="female">
+                                        <input class="form-check-input find_gender" type="radio" name="gender"
+                                            id="female" value="Female" onclick="validationForm()" name="female">
                                         <label class="form-check-label" for="female">
                                             Female
                                         </label>
@@ -151,6 +152,34 @@ include("sidebar.php");
 include("footer.php");
 include("script.php");
 ?>
+<script>
+    function submitForm() {
+        let emailId = $("#emailId").val();
+        let mobileNumber = $("#mobileNumber").val();
+        let name = $("#name").val();
+        let fatherName = $("#fatherName").val();
+        let dob = $("#datepicker").val();
+        let category = $("#selectOptions").val();
+
+        let language = []
+        let checkBoxes = $('.valid_check[type=checkbox]:checked')
+
+        for (let i = 0; i < checkBoxes.length; i++) {
+            language.push(checkBoxes[i].value)
+        }
+
+        let genderBoxes = $(".find_gender[type=radio]:checked");
+        let genderValue = genderBoxes && genderBoxes[0] ? genderBoxes[0].value : ""
+        let saveData = {
+            emailId, mobileNumber, name, fatherName, dob, category, language, genderValue
+        }
+
+    }
+
+    function validationForm() {
+
+    }
+</script>
 
 
 
