@@ -6,7 +6,7 @@ if ($_SEVRER['REQUEST-METHOD'] == 'POST') {
     $fName = $_POST['fatherName'];
     $dob = $_POST['dateOfBirth'];
     $cast = $_POST['category'];
-    $cast = $_POST['language'];
-    $cast = $_POST['genderValue'];
+    $language = $_POST['language'];
+    $gender = $_POST['genderValue'];
 }
 ?>
