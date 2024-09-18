@@ -3,6 +3,7 @@ include("header.php");
 include("navbar.php");
 include("sidebar.php");
 ?>
+
 <div class="content-wrapper" style="min-height: 2171.6px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -31,6 +32,9 @@ include("sidebar.php");
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Application Form</h3>
+                        </div><br>
+                        <div id="dataResponse" class=" alert alert-success">
+
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -173,7 +177,19 @@ include("script.php");
         let saveData = {
             emailId, mobileNumber, name, fatherName, dob, category, language, genderValue
         }
+        $.ajax({
+            type: 'POST',
+            url: 'submit.php',
+            // data: $(saveData).serialize(),
+            data: saveData,
+            // console.log("data", data)
+            success: function (data) {
+                $('#dataResponse').html(data)
 
+            }
+        })
+
+        // console.log(emailId, mobileNumber, name, fatherName, dob, category, language, genderValue)
     }
 
     function validationForm() {
