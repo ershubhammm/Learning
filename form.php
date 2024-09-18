@@ -32,8 +32,9 @@ include("sidebar.php");
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Application Form</h3>
-                        </div><br>
-                        <div id="dataResponse" class=" alert alert-success">
+                        </div>
+
+                        <div id="dataResponse" class="alert-success">
 
                         </div>
                         <!-- /.card-header -->
@@ -43,13 +44,14 @@ include("sidebar.php");
                                 <div class="form-group">
                                     <label for="emailId">Email Address</label>
                                     <input type="email" class="form-control" id="emailId" placeholder="Enter email"
-                                        onblur="validationForm()" name="emailId">
+                                        oninput="validationForm()" name="emailId">
                                     <span id="err_email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="mobileNumber">Mobile Number </label>
                                     <input type="number" class="form-control" id="mobileNumber"
-                                        placeholder="Enter mobile number" onblur="validationForm()" name="mobileNumber">
+                                        placeholder="Enter mobile number" oninput="validationForm()"
+                                        name="mobileNumber">
                                     <span id="err_mobile" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
@@ -69,7 +71,7 @@ include("sidebar.php");
                                 <div class=" form-group">
                                     <label for="date" class="col-sm-1 col-form-label">Date</label>
                                     <div class="input-group date">
-                                        <input type="text" class="form-control" id="datepicker"
+                                        <input type="text" class="form-control" id="dateOfBirth"
                                             onblur="validationForm()" name="dateOfBirth">
                                         <span class="input-group-append">
                                             <span class="input-group-text bg-white d-block">
@@ -82,7 +84,7 @@ include("sidebar.php");
 
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select class="custom-select" id="selectOptions" onChange="validationForm()"
+                                    <select class="custom-select" id="casteCategory" onchange="validationForm()"
                                         name="category">
                                         <option value="">Select Option</option>
                                         <option value="General">General</option>
@@ -97,28 +99,28 @@ include("sidebar.php");
                                     <label for="">Language You Know</label>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="English"
-                                            id="english" onClick="validationForm()" name="english">
+                                            id="english" onclick="validationForm()" name="english">
                                         <label class="form-check-label" for="english">
                                             English
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Hindi"
-                                            id="hindi" onClick="validationForm()" name="hindi">
+                                            id="hindi" onclick="validationForm()" name="hindi">
                                         <label class="form-check-label" for="hindi">
                                             Hindi
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Marathi"
-                                            id="marathi" onClick="validationForm()" name="marathi">
+                                            id="marathi" onclick="validationForm()" name="marathi">
                                         <label class="form-check-label" for="marathi">
                                             Marathi
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Urdu"
-                                            id="urdu" onClick="validationForm()" name="urdu">
+                                            id="urdu" onclick="validationForm()" name="urdu">
                                         <label class="form-check-label" for="urdu">
                                             Urdu
                                         </label>
@@ -162,8 +164,8 @@ include("script.php");
         let mobileNumber = $("#mobileNumber").val();
         let name = $("#name").val();
         let fatherName = $("#fatherName").val();
-        let dob = $("#datepicker").val();
-        let category = $("#selectOptions").val();
+        let dob = $("#dateOfBirth").val();
+        let category = $("#casteCategory").val();
 
         let language = []
         let checkBoxes = $('.valid_check[type=checkbox]:checked')
@@ -188,12 +190,42 @@ include("script.php");
 
             }
         })
-
         // console.log(emailId, mobileNumber, name, fatherName, dob, category, language, genderValue)
     }
 
     function validationForm() {
+        let emailId = $('#emailId').val();
+        let mNumber = $('#mobileNumber').val();
+        let name = $('#name').val();
+        let fName = $('#fatherName').val();
+        let dob = $('#dateOfBirth').val();
+        let category = $('casteCategory').val();
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let mobilePattern = /^[0-9]{10}$/;
+        let language = [];
+        let checkBoxes = $('.valid_check[type=checkbox]:checked')
+        for (let i = 0; i < checkBoxes.length; i++) {
+            language.push(checkboxes[i].value)
+        }
+        let genderBoxes = $('.find_gender[type=radio]:checked');
+        let genderValue = genderBoxes || genderBoxes[0] ? genderBoxes[0] : "";
 
+
+        if (!emailId || emailId == "" || !emailPattern.test(emailId)) {
+            // alert("shubham")
+            $("#err_email").html("Enter valid Email ID!");
+        } else {
+            $("#err_email").html("");
+        }
+        if (!mNumber || mNumber != 10) {
+            $('#err_mobile').html("Enter valid Mobile Number")
+        } else {
+            $('#err_mobile').html("")
+
+        }
+        // let saveData = {
+        //     emailId, mNumber, fName, dob, category, language, checkBoxes
+        // }
     }
 </script>
 
