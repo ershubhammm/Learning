@@ -2,7 +2,7 @@
 include("connection.php");
 header('Content-Type: application/json');
 $insertSql = 'SELECT * FROM student';
-$result = mysqli_query(mysql: $conn, $insertSql);
+$result = mysqli_query(mysql: $conn, query: $insertSql);
 
 
 

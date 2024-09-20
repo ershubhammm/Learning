@@ -83,8 +83,6 @@ if (empty($gender)) {
     exit();
 }
 
-
-
 $insertSql = "INSERT INTO student( email, mobile_number, student_name, middle_name, dob, category, `language`, gender) 
     VALUES ('" . $email . "', '" . $mNumber . "', '" . $name . "', '" . $fName . "','" . $dob . "', '" . $cast . "', '" . $language . "', '" . $gender . "')";
 
