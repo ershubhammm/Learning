@@ -18,8 +18,8 @@ include("sidebar.php");
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Application Data</li>
+                                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                                <li class="breadcrumb-item active">All Data</li>
                             </ol>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ include("sidebar.php");
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Responsive Hover Table</h3>
+                                    <h3 class="card-title">All Data</h3>
 
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -65,18 +65,8 @@ include("sidebar.php");
                                                 <th>Gender</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>183</td>
-                                                <td>Kushshubh46@gmail.com</td>
-                                                <td>1234567890</td>
-                                                <td>Shubham Kushwaha</td>
-                                                <td>Mukhtiar Singh</td>
-                                                <td>11-7-2014</td>
-                                                <td>OBC</td>
-                                                <td>Hindi, English</td>
-                                                <td>Male</td>
-                                            </tr>
+                                        <tbody id="student_list">
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -96,3 +86,37 @@ include("sidebar.php");
 include('script.php');
 include('footer.php');
 ?>
+<script>
+    function showData() {
+        $.ajax({
+            type: 'GET',
+            url: 'getStudentList.php',
+            dataType: 'json',
+            data: JSON.stringify({}),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                let showData = data.Records;
+                let dataStudentHtml = ""
+                for (let i = 0; i < showData.length; i++) {
+                    dataStudentHtml +=
+                        `<tr>
+                        <td id="ID">${showData[i].student_id}</td>
+                        <td id="eMail">${showData[i].email}</td>
+                        <td id="mNumber">${showData[i].mobile_number}</td>
+                        <td id="name">${showData[i].student_name}</td>
+                        <td id="fatherName">${showData[i].middle_name}</td>
+                        <td id="dob">${showData[i].dob}</td>
+                        <td id="caste">${showData[i].category}</td>
+                        <td id="language">${showData[i].language}</td>
+                        <td id="gender">${showData[i].gender}</td>
+                    </tr>`;
+                }
+
+                $("#student_list").append(dataStudentHtml)
+
+            }
+        })
+
+    }
+    showData();   
+</script>
