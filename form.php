@@ -2,8 +2,11 @@
 include("header.php");
 include("navbar.php");
 include("sidebar.php");
-?>
 
+?>
+<div id="sqlData">
+
+</div>
 <div class="content-wrapper" style="min-height: 2171.6px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -71,8 +74,7 @@ include("sidebar.php");
                                 <div class=" form-group">
                                     <label for="date" class="col-sm-1 col-form-label">Date</label>
                                     <div class="input-group date">
-                                        <input type="text" class="form-control" id="dateOfBirth"
-                                            onblur="validationForm()" name="dateOfBirth">
+                                        <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth">
                                         <span class="input-group-append">
                                             <span class="input-group-text bg-white d-block">
                                                 <i class="fa fa-calendar"></i>
@@ -155,11 +157,24 @@ include("sidebar.php");
     </section>
 </div>
 <?php
+// include('myData.php');
 include("footer.php");
 include("script.php");
 ?>
 <script>
+    function emptyString() {
+
+        let emptyError = ["err_email", "err_mobile", "err_name", "err_fName", "err_date", "err_select", "err_language", "err_gender"];
+        for (let i = 0; i < emptyError.length; i++) {
+            $("#" + emptyError[i]).html("");
+            // console.log("#" + "err_email");
+        }
+        // console.log("ASDASD")
+    }
     function submitForm() {
+
+        emptyString();
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let emailId = $("#emailId").val();
         let mobileNumber = $("#mobileNumber").val();
         let name = $("#name").val();
@@ -182,51 +197,93 @@ include("script.php");
         $.ajax({
             type: 'POST',
             url: 'submit.php',
-            // data: $(saveData).serialize(),
-            data: saveData,
-            // console.log("data", data)
+            dataType: 'json',
+            data: JSON.stringify(saveData),
+            contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                $('#dataResponse').html(data)
+                console.log("data", data)
+                if (data.status) {
 
+                } else {
+                    if (data.type) {
+                        $('#' + data.type).html(data.message);
+                    }
+                }
+                // if (data.type == "email") {
+                //     $('#err_email').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "mNumber") {
+                //     $('#err_mobile').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "name") {
+                //     $('#err_name').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "fName") {
+                //     $('#err_fName').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "dob") {
+                //     $('#err_date').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "cast") {
+                //     $('#err_select').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "language") {
+                //     $('#err_language').html(data.message);
+                //     // console.log("as",)
+                // }
+                // if (data.type == "gender") {
+                //     $('#err_gender').html(data.message);
+                //     // console.log("as",)
+                // }
+            },
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
             }
         })
-        // console.log(emailId, mobileNumber, name, fatherName, dob, category, language, genderValue)
     }
+
 
     function validationForm() {
-        let emailId = $('#emailId').val();
-        let mNumber = $('#mobileNumber').val();
-        let name = $('#name').val();
-        let fName = $('#fatherName').val();
-        let dob = $('#dateOfBirth').val();
-        let category = $('casteCategory').val();
-        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        let mobilePattern = /^[0-9]{10}$/;
-        let language = [];
-        let checkBoxes = $('.valid_check[type=checkbox]:checked')
-        for (let i = 0; i < checkBoxes.length; i++) {
-            language.push(checkboxes[i].value)
-        }
-        let genderBoxes = $('.find_gender[type=radio]:checked');
-        let genderValue = genderBoxes || genderBoxes[0] ? genderBoxes[0] : "";
+        //     let emailId = $('#emailId').val();
+        //     let mNumber = $('#mobileNumber').val();
+        //     let name = $('#name').val();
+        //     let fName = $('#fatherName').val();
+        //     let dob = $('#dateOfBirth').val();
+        //     let category = $('casteCategory').val();
+        //     let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        //     let mobilePattern = /^[0-9]{10}$/;
+        //     let language = [];
+        //     let checkBoxes = $('.valid_check[type=checkbox]:checked')
+        //     for (let i = 0; i < checkBoxes.length; i++) {
+        //         language.push(checkboxes[i].value)
+        //     }
+        //     let genderBoxes = $('.find_gender[type=radio]:checked');
+        //     let genderValue = genderBoxes || genderBoxes[0] ? genderBoxes[0] : "";
 
 
-        if (!emailId || emailId == "" || !emailPattern.test(emailId)) {
-            // alert("shubham")
-            $("#err_email").html("Enter valid Email ID!");
-        } else {
-            $("#err_email").html("");
-        }
-        if (!mNumber || mNumber != 10) {
-            $('#err_mobile').html("Enter valid Mobile Number")
-        } else {
-            $('#err_mobile').html("")
+        //     if (!emailId || emailId == "" || !emailPattern.test(emailId)) {
+        //         // alert("shubham")
+        //         $("#err_email").html("Enter valid Email ID!");
+        //     } else {
+        //         $("#err_email").html("");
+        //     }
+        //     if (!mNumber || mNumber != 10) {
+        //         $('#err_mobile').html("Enter valid Mobile Number")
+        //     } else {
+        //         $('#err_mobile').html("")
 
-        }
-        // let saveData = {
-        //     emailId, mNumber, fName, dob, category, language, checkBoxes
-        // }
+        //     }
+        //     // let saveData = {
+        //     //     emailId, mNumber, fName, dob, category, language, checkBoxes
+        //     // }
     }
+
 </script>
 
 
