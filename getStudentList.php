@@ -1,7 +1,16 @@
 <?php
 include("connection.php");
 header('Content-Type: application/json');
-$insertSql = 'SELECT * FROM student';
+$data = json_decode(file_get_contents('php://input'), true);
+$student_id = "";
+if (isset($_GET["student_id"])) {
+    $student_id = $_GET["student_id"];
+}
+
+$insertSql = 'select * FROM student';
+if ($student_id) {
+    $insertSql = $insertSql . " Where student_id='" . $student_id . "'";
+}
 $result = mysqli_query(mysql: $conn, query: $insertSql);
 $data = [];
 if (mysqli_num_rows($result) > 0) {

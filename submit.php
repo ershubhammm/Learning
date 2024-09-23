@@ -14,6 +14,8 @@ $dob = $data['dob'];
 $cast = $data['category'];
 $language = implode(",", $data['language']);
 $gender = $data['genderValue'];
+$student_id = $data['student_id'];
+
 
 if (empty($email)) {
     echo json_encode([
@@ -83,19 +85,46 @@ if (empty($gender)) {
     exit();
 }
 
-$insertSql = "INSERT INTO student( email, mobile_number, student_name, middle_name, dob, category, `language`, gender) 
+if (empty($student_id)) {
+    $check_email = "Select * from student where (email='" . $email . "' or mobile_number='" . $mNumber . "') ";
+    $result = mysqli_query(mysql: $conn, query: $check_email);
+
+    if ((mysqli_num_rows($result) > 0)) {
+        // $row = mysqli_fetch_assoc($result);
+
+        // if ($email == $row->email) {
+        echo json_encode([
+            'type' => 'err_email',
+            'status' => false,
+            'message' => "Email/Mobile Number already exist! "
+        ]);
+        // }
+
+        exit();
+    }
+
+    $sql = "INSERT INTO student( email, mobile_number, student_name, middle_name, dob, category, `language`, gender) 
     VALUES ('" . $email . "', '" . $mNumber . "', '" . $name . "', '" . $fName . "','" . $dob . "', '" . $cast . "', '" . $language . "', '" . $gender . "')";
 
-$result = mysqli_query($conn, $insertSql);
+
+
+} else {
+    $sql = "UPDATE student
+SET student_name='" . $name . "', middle_name='" . $fName . "', dob='" . $dob . "', `language`='" . $language . "', gender='" . $gender . "'
+WHERE student_id= '" . $student_id . "' ";
+}
+
+$result = mysqli_query($conn, $sql);
 
 if ($result) {
     echo json_encode([
-        'status' => 'success',
+        'status' => true,
         'message' => "New record created successfully"
     ]);
 } else {
     echo json_encode([
         'status' => false,
+        'type' => 'error',
         'message' => "Error: " . $sql . "<br>" . mysqli_error($conn)
     ]);
 }

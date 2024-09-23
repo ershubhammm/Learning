@@ -34,7 +34,7 @@ include("sidebar.php");
                             <h3 class="card-title">Application Form</h3>
                         </div>
 
-                        <div id="dataResponse" class="alert-success">
+                        <div id="main_error" class=" alert-danger">
 
                         </div>
                         <!-- /.card-header -->
@@ -44,38 +44,37 @@ include("sidebar.php");
                                 <div class="form-group">
                                     <label for="emailId">Email Address</label>
                                     <input type="email" class="form-control" id="emailId" placeholder="Enter email"
-                                        oninput="validationForm()" name="emailId">
+                                        name="emailId">
                                     <span id="err_email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="mobileNumber">Mobile Number </label>
                                     <input type="number" class="form-control" id="mobileNumber"
-                                        placeholder="Enter mobile number" oninput="validationForm()"
-                                        name="mobileNumber">
+                                        placeholder="Enter mobile number" name="mobileNumber">
                                     <span id="err_mobile" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Full Name</label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter name"
-                                        onblur="validationForm()" name="name">
+                                        name="name">
                                     <span id="err_name" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Father's Name</label>
                                     <input type="text" class="form-control" id="fatherName"
-                                        placeholder="Enter Father's name" onblur="validationForm()" name="fatherName">
+                                        placeholder="Enter Father's name" name="fatherName">
                                     <span id="err_fName" class="text-danger"></span>
                                 </div>
 
                                 <div class=" form-group">
                                     <label for="date" class="col-sm-1 col-form-label">Date</label>
                                     <div class="input-group date">
-                                        <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
                                         <span class="input-group-append">
-                                            <span class="input-group-text bg-white d-block">
+                                            <!-- <span class="input-group-text bg-white d-block">
                                                 <i class="fa fa-calendar"></i>
-                                            </span>
+                                            </span> -->
                                         </span>
                                     </div>
                                     <span id="err_date" class="text-danger"></span>
@@ -83,8 +82,7 @@ include("sidebar.php");
 
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select class="custom-select" id="casteCategory" onchange="validationForm()"
-                                        name="category">
+                                    <select class="custom-select" id="casteCategory" name="category">
                                         <option value="">Select Option</option>
                                         <option value="General">General</option>
                                         <option value="OBC">OBC</option>
@@ -98,28 +96,28 @@ include("sidebar.php");
                                     <label for="">Language You Know</label>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="English"
-                                            id="english" onclick="validationForm()" name="english">
+                                            id="english" name="english">
                                         <label class="form-check-label" for="english">
                                             English
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Hindi"
-                                            id="hindi" onclick="validationForm()" name="hindi">
+                                            id="hindi" name="hindi">
                                         <label class="form-check-label" for="hindi">
                                             Hindi
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Marathi"
-                                            id="marathi" onclick="validationForm()" name="marathi">
+                                            id="marathi" name="marathi">
                                         <label class="form-check-label" for="marathi">
                                             Marathi
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input valid_check" type="checkbox" value="Urdu"
-                                            id="urdu" onclick="validationForm()" name="urdu">
+                                            id="urdu" name="urdu">
                                         <label class="form-check-label" for="urdu">
                                             Urdu
                                         </label>
@@ -129,13 +127,13 @@ include("sidebar.php");
                                 <div>
                                     <label for="">Gender</label>
                                     <div class="form-check">
-                                        <input class="form-check-input find_gender" type="radio" name="gender" id="male"
-                                            value="Male" onclick="validationForm()" name="male">
+                                        <input class="form-check-input find_gender" type="radio" name="gender" id="Male"
+                                            value="Male" name="male">
                                         <label class="form-check-label" for="male">
                                             Male
                                         </label><br>
                                         <input class="form-check-input find_gender" type="radio" name="gender"
-                                            id="female" value="Female" onclick="validationForm()" name="female">
+                                            id="Female" value="Female" name="female">
                                         <label class="form-check-label" for="female">
                                             Female
                                         </label>
@@ -146,6 +144,7 @@ include("sidebar.php");
                             <div class="card-footer">
                                 <button type="button" onclick="submitForm()" class="btn btn-primary">Submit</button>
                             </div>
+                            <input type="hidden" id="student_id" name="student_id">
                         </form>
                     </div>
                 </div>
@@ -214,22 +213,82 @@ include("footer.php");
 include("script.php");
 ?>
 <script>
+    function deleteData() {
+
+    }
+    function editData(student_id) {
+
+        $('#emailId').attr('readonly', true);
+        $('#mobileNumber').attr('readonly', true);
+        // Fetch the student's data to pre-fill the edit form
+        $.ajax({
+            url: 'getStudentList.php?student_id=' + student_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log("raj", data.Records)
+                let editData = data.Records[0]
+                // for (let i = 0; i < editData.length; i++) {
+                $('#emailId').val(editData.email);
+                $('#mobileNumber').val(editData.mobile_number);
+                $('#name').val(editData.student_name);
+                $('#fatherName').val(editData.middle_name);
+                $('#dateOfBirth').val(editData.dob);
+                $('#casteCategory').val(editData.category);
+                $('#casteCategory').val(editData.category);
+                $('student_id').val(editData.student_id);
+
+
+                let language = editData.language.split(",");
+                let checkBoxes = $('.valid_check[type=checkbox]')
+
+                for (let i = 0; i < checkBoxes.length; i++) {
+                    if (language.indexOf(checkBoxes[i].value) >= 0) {
+                        checkBoxes[i].checked = true
+                    }
+                }
+
+                let gender = editData.gender
+                console.log("gender", gender)
+                $("#" + gender).attr("checked", true);
+                $("#student_id").val(editData.student_id)
+            }
+
+        });
+    }
+
+    function editData2(email_id, mobile_number) {
+
+        // Fetch the student's data to pre-fill the edit form
+
+        // for (let i = 0; i < editData.length; i++) {
+        $('#emailId').val(email_id);
+        $('#mobileNumber').val(mobile_number);
+
+
+
+    }
+
+
     function showData() {
         // $("#student_list").html("");
         $.ajax({
             type: 'GET',
             url: 'getStudentList.php',
             dataType: 'json',
-            data: JSON.stringify({}),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 let showData = data.Records;
                 let dataStudentHtml = ""
                 for (let i = 0; i < showData.length; i++) {
+                    let colorGr = ((i + 1) % 2) == 0 ? 'color:green' : "color:red"
+                    //
+                    // <td id="button"><button onclick="editData2('${showData[i].email}','${showData[i].mobile_number}')">Edit</button></td>
+
                     dataStudentHtml +=
-                        `<tr>
-                        <td id="button"><button>Edit</button></td>
-                        <td id="ID">${showData[i].student_id}</td>
+                        `<tr >
+                        <td id="button"><button class= 'btn btn-primary' onclick="editData('${showData[i].student_id}')">Edit</button><span><button class= 'btn btn-danger' onclick="deleteData('${showData[i].student_id}')">Delete</button></span></td>
+                        <td id="ID" >${showData[i].student_id}</td>
                         <td id="eMail">${showData[i].email}</td>
                         <td id="mNumber">${showData[i].mobile_number}</td>
                         <td id="name">${showData[i].student_name}</td>
@@ -258,10 +317,9 @@ include("script.php");
         // console.log("ASDASD")
     }
     function submitForm() {
-        reserList();
-        return false
 
         emptyString();
+
         let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let emailId = $("#emailId").val();
         let mobileNumber = $("#mobileNumber").val();
@@ -269,6 +327,7 @@ include("script.php");
         let fatherName = $("#fatherName").val();
         let dob = $("#dateOfBirth").val();
         let category = $("#casteCategory").val();
+        let student_id = $('#student_id').val()
 
         let language = []
         let checkBoxes = $('.valid_check[type=checkbox]:checked')
@@ -280,8 +339,9 @@ include("script.php");
         let genderBoxes = $(".find_gender[type=radio]:checked");
         let genderValue = genderBoxes && genderBoxes[0] ? genderBoxes[0].value : ""
         let saveData = {
-            emailId, mobileNumber, name, fatherName, dob, category, language, genderValue
+            emailId, mobileNumber, name, fatherName, dob, category, language, genderValue, student_id
         }
+        console.log('saveData', saveData)
         $.ajax({
             type: 'POST',
             url: 'submit.php',
@@ -291,12 +351,18 @@ include("script.php");
             success: function (data) {
                 console.log("data", data)
                 if (data.status) {
-
+                    alert("1")
                     showData();
-                    reserList();
+                    resetList();
+                    $('#emailId').attr('readonly', false);
+                    $('#mobileNumber').attr('readonly', false);
                 } else {
-                    if (data.type) {
+                    if (data.type == 'error') {
+                        $('#main_error').html(data.message);
+
+                    } else {
                         $('#' + data.type).html(data.message);
+
                     }
                 }
                 // if (data.type == "email") {
@@ -338,6 +404,24 @@ include("script.php");
         })
     }
 
+    function resetList() {
+        let resetList = ["emailId", "mobileNumber", "name", "fatherName", "dateOfBirth", "casteCategory"]
+        for (let i = 0; i < resetList.length; i++) {
+            $("#" + resetList[i]).val("");
+        }
+
+
+        let checkBoxes = $('.valid_check[type=checkbox]:checked')
+        console.log("check", checkBoxes)
+        for (let i = 0; i < checkBoxes.length; i++) {
+            checkBoxes[i].checked = false
+        }
+
+        let genderBoxes = $('.find_gender[type=radio]:checked')
+        genderBoxes[0].checked = false
+        // radioBoxes.checked = false
+
+    }
 
     function validationForm() {
         //     let emailId = $('#emailId').val();
@@ -372,20 +456,6 @@ include("script.php");
         //     // let saveData = {
         //     //     emailId, mNumber, fName, dob, category, language, checkBoxes
         //     // }
-    }
-
-
-    function reserList() {
-
-        let resetList = ["emailId", "mobileNumber", "name", "fatherName", "dateOfBirth", "casteCategory"];
-        for (let i = 0; i < resetList.length; i++) {
-            $("#" + resetList[i]).val("");
-        }
-        let checkBoxes = $('.valid_check[type=checkbox]:checked')
-        console.log("cjeck", checkBoxes)
-        for (let i = 0; i < checkBoxes.length; i++) {
-            checkBoxes[i].checked = false
-        }
     }
 
 
