@@ -21,7 +21,7 @@ if (empty($email)) {
     echo json_encode([
         'type' => 'err_email',
         'status' => false,
-        'message' => "Pleae enter valid Email!"
+        'message' => "Please enter valid Email!"
     ]);
     exit();
 }

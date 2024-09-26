@@ -1,6 +1,5 @@
 <?php
 include("connection.php");
-header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 $student_id = "";
 if (isset($_GET["student_id"])) {
@@ -31,18 +30,9 @@ if (mysqli_num_rows($result) > 0) {
         'message' => "No data Found"
     ]);
 }
-
-
-
-
-
-
-
-
-
-
 // print data like console.log
 // print_r($data);
 
-// echo "Email = " . $email . ", Mobile Number = " . $mNumber . ", Name = " . $name . ", Father Name = " . $fName . ", DOB = " . $dob . ", Category = " . $cast . ", Languages = " . $language . ", Gender = " . $gender;
+// echo "Email = " . $email . ", Mobile Number = " . $mNumber . ", Name = " . $name . ", Father Name = " . $fName . ",
+//DOB = " . $dob . ", Category = " . $cast . ", Languages = " . $language . ", Gender = " . $gender;
 ?>

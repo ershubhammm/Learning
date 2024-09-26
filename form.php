@@ -213,8 +213,27 @@ include("footer.php");
 include("script.php");
 ?>
 <script>
-    function deleteData() {
+    function deleteData(student_id) {
+        let answer = confirm("Are sure want to delete student_id = " + student_id)
+        alert(answer)
+        if (answer) {
+            $.ajax({
+                url: 'delete.php?student_id=' + student_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == 1) {
+                        showData();
+                        // location.reload();
+                    } else {
+                        alert("Unable to delete")
+                    }
 
+
+                }
+
+            });
+        }
     }
     function editData(student_id) {
 
@@ -226,7 +245,6 @@ include("script.php");
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log("raj", data.Records)
                 let editData = data.Records[0]
                 // for (let i = 0; i < editData.length; i++) {
                 $('#emailId').val(editData.email);
@@ -249,7 +267,6 @@ include("script.php");
                 }
 
                 let gender = editData.gender
-                console.log("gender", gender)
                 $("#" + gender).attr("checked", true);
                 $("#student_id").val(editData.student_id)
             }
@@ -312,9 +329,7 @@ include("script.php");
         let emptyError = ["err_email", "err_mobile", "err_name", "err_fName", "err_date", "err_select", "err_language", "err_gender"];
         for (let i = 0; i < emptyError.length; i++) {
             $("#" + emptyError[i]).html("");
-            // console.log("#" + "err_email");
         }
-        // console.log("ASDASD")
     }
     function submitForm() {
 
@@ -341,7 +356,6 @@ include("script.php");
         let saveData = {
             emailId, mobileNumber, name, fatherName, dob, category, language, genderValue, student_id
         }
-        console.log('saveData', saveData)
         $.ajax({
             type: 'POST',
             url: 'submit.php',
@@ -349,9 +363,7 @@ include("script.php");
             data: JSON.stringify(saveData),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                console.log("data", data)
                 if (data.status) {
-                    alert("1")
                     showData();
                     resetList();
                     $('#emailId').attr('readonly', false);
@@ -367,39 +379,30 @@ include("script.php");
                 }
                 // if (data.type == "email") {
                 //     $('#err_email').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "mNumber") {
                 //     $('#err_mobile').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "name") {
                 //     $('#err_name').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "fName") {
                 //     $('#err_fName').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "dob") {
                 //     $('#err_date').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "cast") {
                 //     $('#err_select').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "language") {
                 //     $('#err_language').html(data.message);
-                //     // console.log("as",)
                 // }
                 // if (data.type == "gender") {
                 //     $('#err_gender').html(data.message);
-                //     // console.log("as",)
                 // }
             },
             error: function (xhr, status, error) {
-                console.log('Error:', error);
             }
         })
     }
@@ -412,7 +415,6 @@ include("script.php");
 
 
         let checkBoxes = $('.valid_check[type=checkbox]:checked')
-        console.log("check", checkBoxes)
         for (let i = 0; i < checkBoxes.length; i++) {
             checkBoxes[i].checked = false
         }
