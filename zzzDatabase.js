@@ -1,0 +1,51 @@
+// Database 
+
+ALTER TABLE `bank` ADD `user_id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`user_id`);
+// Add column in Table
+
+
+user_name
+father_name
+account_Number
+ifsc code
+bank_name
+ SELECT * FROM `bank_detail` join bank on bank.user_id = bank_detail.user_id  ;
+
+6 data
+
+
+Second level
+
+user_name 
+father_name
+bank_detail   
+
+Select * from bank;
+select * from bank_detail where user_id=1;
+
+
+ Modal   account_Number
+ifsc code
+bank_name
+
+
+
+
+
+Third level
+
+
+user_name
+father_name
+account_Number
+ifsc code
+bank_name
+
+SELECT bank.user_id,acc_holder,father_name,GROUP_CONCAT(bank_name) as b_name,GROUP_CONCAT(bank_detail.ifsc) as ifsc,GROUP_CONCAT(bank_detail.account) as b_acc FROM `bank_detail`  join bank on bank.user_id = bank_detail.user_id group by bank.user_id;
+
+
+SELECT bank.user_id,acc_holder,father_name,GROUP_CONCAT(Concat_ws('-',bank_detail.bank_name,bank_detail.ifsc,bank_detail.account ))  as b_acc FROM `bank_detail`  join bank on bank.user_id = bank_detail.user_id group by bank.user_id;
+
+
+
+

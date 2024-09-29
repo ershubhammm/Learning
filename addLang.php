@@ -10,7 +10,7 @@ include("sidebar.php"); ?>
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data</h1><span id = 'total_count'></span>
+                            <h1>Data</h1><span id='total_count'></span>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -80,7 +80,7 @@ include('footer.php');
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 let toatalCount = data.total_count
-                $('#total_count').html("Total Data : "+toatalCount);
+                $('#total_count').html("Total Data : " + toatalCount);
                 let showData = data.Records
                 let createList = "";
                 for (let i = 0; i < showData.length; i++) {
@@ -121,13 +121,13 @@ include('footer.php');
                     if (data.status) {
                         alert(data.message)
                         showobject();
-                    $('#lang_id').val("");
-                    $('#languageValue').val("");
-                    $("#submitButton").html("Add");
+                        $('#lang_id').val("");
+                        $('#languageValue').val("");
+                        $("#submitButton").html("Add");
 
                     }
-                    
-                    //         if (languageId >= 0) {
+
+                    //       if (languageId >= 0) {
                     //             language[languageId] = languageVal
                     //             showobject();
                     //             languageId = -1;
@@ -150,7 +150,7 @@ include('footer.php');
             })
 
         }
-        
+
 
     }
 
@@ -172,23 +172,23 @@ include('footer.php');
     }
     function onDelete(lang_id, language) {
         let answer = confirm("Are you sure want to delete Language " + language);
-        if(answer){
+        if (answer) {
             $.ajax({
-            url: 'langDelete.php?lang_id=' + lang_id,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                if (data==1){
-                    showobject();
-                } else {
-                    alert("Data not deleted!")
-                }
-              
+                url: 'langDelete.php?lang_id=' + lang_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == 1) {
+                        showobject();
+                    } else {
+                        alert("Data not deleted!")
+                    }
 
-            } 
-        })
+
+                }
+            })
         }
-        
+
 
     }
     //  .append() = already data diya .....new dta usek aage add ho jayega
