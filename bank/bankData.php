@@ -62,7 +62,7 @@ include("../sidebar.php");
                                                 <th>Account Number</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="student_list">
+                                        <tbody id="bank_list">
 
                                         </tbody>
                                     </table>
@@ -84,18 +84,33 @@ include('../script.php');
 include('../footer.php');
 ?>
 <script>
-    getBankData();
     function getBankData() {
-        console.log("1")
         $.ajax({
             url: "<?php echo BASE_URL; ?>bank/getBankData.php",
             type: 'GET',
             dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                console.log("data", data);
+                let showData = data.records
+                console.log("showData", showData)
+                let createList = "";
+                for (let i = 0; i < showData.length; i++) {
+                    createList +=
+                        `<tr >         
+                    <td ><b>${i + 1}</b></td>
+                    <td >${showData[i].acc_holder}</td>
+                    <td >${showData[i].father_name}</td>
+                    <td >${showData[i].bank_name}</td>
+                    <td >${showData[i].ifsc}</td>
+                    <td >${showData[i].account}</td>
+             </tr>`;
+                }
+                $('#bank_list').html(createList);
             }
         })
-        console.log("2")
+
     }
+    getBankData();
+
 
 </script>

@@ -24,7 +24,8 @@ Select * from bank;
 select * from bank_detail where user_id=1;
 
 
- Modal   account_Number
+ Modal  
+account_Number
 ifsc code
 bank_name
 

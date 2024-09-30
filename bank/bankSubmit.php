@@ -17,7 +17,7 @@ if ($result) {
         $ifsc = $Bank_details[$i]["ifsc"];
         $account = $Bank_details[$i]["account"];
 
-        $sql = "INSERT INTO bank_detail(bank_name, ifsc, account,user_id) VALUES ('" . $bank_name . "','" . $ifsc . "','" . $account . "', '" . $user_id . "')";
+        $sql = "INSERT INTO bank_detail(bank_name, ifsc, account, user_id) VALUES ('" . $bank_name . "','" . $ifsc . "','" . $account . "', '" . $user_id . "')";
         $result = mysqli_query($conn, $sql);
         if (!$result) {
             echo json_encode([

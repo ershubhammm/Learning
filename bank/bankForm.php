@@ -96,25 +96,56 @@ include("../sidebar.php");
                                         <table class="table table-hover text-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>Action</th>
+                                                    <th>Sr NO</th>
                                                     <th>Account Holder</th>
                                                     <th>Father's Name</th>
-                                                    <th>Account Number</th>
-                                                    <th>IFSC Code</th>
-                                                    <th>Bank Name</th>
+                                                    <th>Account Details</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="account_list">
+                                            <tbody id="bankData_List">
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
                     </div>
                 </section>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Account Detail</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="seeBankDetails">
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr NO</th>
+                                            <th>Bank Name</th>
+                                            <th>IFSC</th>
+                                            <th>Account Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="seeBankDetail">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -128,10 +159,57 @@ include('../footer.php');
     let bankData = [
 
     ];
-    function getBankDetail() {
+    function showBankDetails() {
         $.ajax({
-
+            url: "<?php echo BASE_URL; ?>bank/getBankDetails.php",
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                // console.log("data", data);
+                let showData = data.records
+                let createList = "";
+                for (let i = 0; i < showData.length; i++) {
+                    createList += `<tr >         
+                    <td >${i + 1}</td>
+                    <td >${showData[i].acc_holder}</td>
+                    <td >${showData[i].father_name}</td>
+                    <td ><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick=seeDeatails(${showData[i].user_id})>See Account Detail</button></td>
+                    </tr>`;
+                }
+                $('#bankData_List').html(createList);
+            }
         })
+    }
+    showBankDetails();
+
+
+    function seeDeatails(userID) {
+        let user_id = userID.toString();
+        $.ajax({
+            url: "<?php echo BASE_URL; ?>bank/getBankDetails.php",
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                let showData = data.records;
+                // console.log("showData", showData)
+                let createModal = "";
+                for (let i = 0; i < showData.length; i++) {
+                    if (user_id == showData[i].user_id) {
+                        console.log("userID", user_id, "showData[i].user_id", showData[i].user_id);
+                        createModal += `<tr >         
+                    <td >${i + 1}</td>
+                    <td >${showData[i].bank_name}</td>
+                    <td >${showData[i].ifsc}</td>
+                    <td >${showData[i].account}</td>
+                    </tr>`;
+                    }
+                }
+                $("seeBankDetail").html(createModal);
+            }
+        });
+
     }
     function checkBankDetail() {
         let checkAllValueExist = true;

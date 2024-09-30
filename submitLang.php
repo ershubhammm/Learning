@@ -13,13 +13,12 @@ if (empty($lang)) {
     ]);
     exit;
 }
-
-if (empty($lang_id)){
+if (empty($lang_id)) {
     $msg = "created";
     $sql = "INSERT INTO st_lang (lang) 
     VALUES ('" . $lang . "')";
 
-}else {
+} else {
     $msg = "updated";
 
     $sql = "UPDATE st_lang SET lang='" . $lang . "' WHERE lang_id= '" . $lang_id . "' ";
@@ -33,7 +32,7 @@ if ($result) {
     echo json_encode([
         'type' => 'new',
         'status' => true,
-        'message' => "Record ".$msg." successfully"
+        'message' => "Record " . $msg . " successfully"
     ]);
 } else {
     echo json_encode([

@@ -318,7 +318,7 @@ include("script.php");
                     // $("#student_list").append(dataStudentHtml)
                 }
 
-                $("#student_list").html(dataStudentHtml)
+                $("#student_list").html(dataStudentHtml);
 
             }
         })
