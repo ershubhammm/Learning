@@ -14,12 +14,12 @@ include("../sidebar.php");
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data</h1>
+                            <h1>Bank Data</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                                <li class="breadcrumb-item active">All Data</li>
+                                <li class="breadcrumb-item active">Bank Data</li>
                             </ol>
                         </div>
                     </div>
@@ -86,15 +86,16 @@ include('../footer.php');
 <script>
     getBankData();
     function getBankData() {
+        console.log("1")
         $.ajax({
             url: "<?php echo BASE_URL; ?>bank/getBankData.php",
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
+                console.log("data", data);
             }
         })
-
+        console.log("2")
     }
 
 </script>

@@ -1,7 +1,7 @@
-// Database 
+*Database 
 
 ALTER TABLE `bank` ADD `user_id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`user_id`);
-// Add column in Table
+ Add column in Table
 
 
 user_name
