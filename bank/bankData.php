@@ -91,8 +91,9 @@ include('../footer.php');
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                let showData = data.records
-                console.log("showData", showData)
+                console.log("showData", data);
+                let showData = data.records;
+                console.log("showData", showData);
                 let createList = "";
                 for (let i = 0; i < showData.length; i++) {
                     createList +=
@@ -105,9 +106,10 @@ include('../footer.php');
                     <td >${showData[i].account}</td>
              </tr>`;
                 }
+                console.log('w');
                 $('#bank_list').html(createList);
             }
-        })
+        });
 
     }
     getBankData();

@@ -100,6 +100,7 @@ include("../sidebar.php");
                                                     <th>Account Holder</th>
                                                     <th>Father's Name</th>
                                                     <th>Account Details</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="bankData_List">
@@ -129,7 +130,7 @@ include("../sidebar.php");
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Sr NO</th>
+                                            <th>Sr No</th>
                                             <th>Bank Name</th>
                                             <th>IFSC</th>
                                             <th>Account Number</th>
@@ -155,13 +156,12 @@ include('../script.php');
 include('../footer.php');
 ?>
 <script>
-
     let bankData = [
 
     ];
     function showBankDetails() {
         $.ajax({
-            url: "<?php echo BASE_URL; ?>bank/getBankDetails.php",
+            url: "<?php echo BASE_URL; ?>bank/userData.php",
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -174,7 +174,8 @@ include('../footer.php');
                     <td >${i + 1}</td>
                     <td >${showData[i].acc_holder}</td>
                     <td >${showData[i].father_name}</td>
-                    <td ><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick=seeDeatails(${showData[i].user_id})>See Account Detail</button></td>
+                    <td ><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick=showDeatail('${showData[i].user_id}')>See Account Detail</button></td>
+                    <td><button class="btn btn-success" onclick="onEditDetails('${showData[i].user_id}')">Edit</button></td>
                     </tr>`;
                 }
                 $('#bankData_List').html(createList);
@@ -183,30 +184,60 @@ include('../footer.php');
     }
     showBankDetails();
 
-
-    function seeDeatails(userID) {
-        let user_id = userID.toString();
+    function onEditDetails(userID) {
         $.ajax({
-            url: "<?php echo BASE_URL; ?>bank/getBankDetails.php",
+            url: "<?php echo BASE_URL; ?>bank/getBankData.php?user_id=" + userID,
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                let editData = data.records;
+                console.log(editData);
+                for (let i = 0; i < editData.length; i++) {
+
+                    $('#acc_holder').val(editData[i].acc_holder);
+                    $('#father_name').val(editData[i].father_name);
+                    let getBankDetails = [
+                        editData[i].bank_name,
+                        editData[i].ifsc,
+                        editData[i].account,
+                    ];
+                    bankData.push(getBankDetails);
+                    console.log("bankData", bankData);
+                    showBankData();
+                    // $('#bank')${ i + 1 }.val(editData[i].bank_name);
+                    // $('#bank')${ i + 1 }.val(editData[i].ifsc);
+                    // $('#bank')${ i + 1 }.val(editData[i].account);
+                }
+            }
+        });
+    }
+
+    function showDeatail(userID) {
+        // console.log(userID);
+        $.ajax({
+            url: "<?php echo BASE_URL; ?>bank/getBankData.php?user_id=" + userID,
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 let showData = data.records;
-                // console.log("showData", showData)
                 let createModal = "";
+                let count = 1;
                 for (let i = 0; i < showData.length; i++) {
-                    if (user_id == showData[i].user_id) {
-                        console.log("userID", user_id, "showData[i].user_id", showData[i].user_id);
-                        createModal += `<tr >         
-                    <td >${i + 1}</td>
+                    // if (userID == showData[i].user_id) {
+                    console.log("userID", userID, "showData[i].user_id", showData[i]);
+                    createModal += `<tr >         
+                    <td >${count}</td>
                     <td >${showData[i].bank_name}</td>
                     <td >${showData[i].ifsc}</td>
                     <td >${showData[i].account}</td>
                     </tr>`;
-                    }
+                    count++;
+                    // }
+
                 }
-                $("seeBankDetail").html(createModal);
+                $("#seeBankDetail").html(createModal);
             }
         });
 
